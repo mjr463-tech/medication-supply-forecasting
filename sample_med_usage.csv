@@ -1,0 +1,19 @@
+date,medication,daily_usage,inventory_units,unit_cost,lead_time_days
+2024-01-01,Amoxicillin 500mg,145,1250,0.15,7
+2024-01-01,Ibuprofen 200mg,220,1850,0.08,5
+2024-01-01,Metformin 500mg,180,1100,0.10,10
+2024-01-01,Lisinopril 10mg,95,950,0.12,14
+2024-01-01,Atorvastatin 20mg,75,800,0.18,12
+2024-01-01,Omeprazole 20mg,110,1450,0.09,8
+2024-01-02,Amoxicillin 500mg,150,1235,0.15,7
+2024-01-02,Ibuprofen 200mg,215,1840,0.08,5
+2024-01-02,Metformin 500mg,185,1090,0.10,10
+2024-01-02,Lisinopril 10mg,100,940,0.12,14
+2024-01-02,Atorvastatin 20mg,78,795,0.18,12
+2024-01-02,Omeprazole 20mg,115,1445,0.09,8
+2024-01-03,Amoxicillin 500mg,155,1220,0.15,7
+2024-01-03,Ibuprofen 200mg,225,1825,0.08,5
+2024-01-03,Metformin 500mg,190,1080,0.10,10
+2024-01-03,Lisinopril 10mg,98,925,0.12,14
+2024-01-03,Atorvastatin 20mg,80,790,0.18,12
+2024-01-03,Omeprazole 20mg,120,1440,0.09,8

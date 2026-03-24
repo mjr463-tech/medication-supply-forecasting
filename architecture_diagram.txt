@@ -1,0 +1,153 @@
+MediSupply Forecasting Dashboard - System Architecture
+=====================================================
+
+┌─────────────────────────────────────────────────────────────────┐
+│                     User Interface Layer                        │
+│                   (Streamlit Dashboard)                         │
+│                                                                 │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
+│  │   Trends     │  │  Forecasts   │  │   Risk Mgmt  │          │
+│  │  & Usage     │  │  & Demand    │  │  & Alerts    │          │
+│  └──────────────┘  └──────────────┘  └──────────────┘          │
+└─────────────────────────────────────────────────────────────────┘
+                            ↑
+                            │
+┌─────────────────────────────────────────────────────────────────┐
+│                    Processing Layer                             │
+│                                                                 │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  Data Validation & Cleaning                             │   │
+│  │  - Check required columns                               │   │
+│  │  - Handle missing values                                │   │
+│  │  - Outlier detection                                    │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                            ↓                                    │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  Forecasting Engine (app/forecasting.py)                │   │
+│  │  - Polynomial Regression                                │   │
+│  │  - Seasonality Decomposition                            │   │
+│  │  - Confidence Intervals                                 │   │
+│  │  - Accuracy Metrics (MAPE, MAE)                         │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                            ↓                                    │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  Risk Engine (app/risk_engine.py)                        │   │
+│  │  - Risk Scoring (0-100)                                 │   │
+│  │  - Shortage Probability                                 │   │
+│  │  - Reorder Point Calculation                            │   │
+│  │  - Procurement Recommendations                          │   │
+│  └──────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+                            ↑
+                            │
+┌─────────────────────────────────────────────────────────────────┐
+│                     Data Layer                                  │
+│                                                                 │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  Data Sources                                           │   │
+│  │  - CSV Upload (daily usage, inventory, lead time)       │   │
+│  │  - Excel Import                                         │   │
+│  │  - Sample Data (for demo)                               │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                            ↓                                    │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  Data Storage                                           │   │
+│  │  - Pandas DataFrame (in-memory)                         │   │
+│  │  - Time-indexed structure                               │   │
+│  │  - Multi-medication aggregation                         │   │
+│  └──  ───────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+
+Data Flow:
+==========
+
+Upload CSV
+    ↓
+Validate Columns
+    ↓
+Parse Dates & Types
+    ↓
+Aggregate by Medication
+    ↓
+Calculate Metrics
+    ↓
+Generate Forecasts
+    ↓
+Calculate Risk Scores
+    ↓
+Create Recommendations
+    ↓
+Render Dashboard
+
+
+Modules:
+========
+
+1. app/main.py
+   - Streamlit app entry point
+   - UI/UX rendering
+   - Data input handling
+   - Chart generation
+
+2. app/forecasting.py
+   - MedicationForecaster class
+   - Polynomial regression
+   - Confidence interval calculation
+   - Accuracy metrics (MAPE, MAE, RMSE)
+
+3. app/risk_engine.py
+   - ShortageRiskEngine class
+   - Risk scoring logic
+   - Shortage probability
+   - Reorder recommendations
+
+4. data/sample_med_usage.csv
+   - Sample medication data
+   - 6 medications, multiple days
+   - CSV format for import
+
+5. docs/
+   - proposal.md (project overview)
+   - architecture_diagram.txt (this file)
+
+6. governance/
+   - evaluation_log.md (model performance)
+   - risks.md (risk assessment)
+
+
+Key Algorithms:
+===============
+
+Risk Score Calculation:
+- If days_of_supply < lead_time: score = 95 (CRITICAL)
+- Elif days_of_supply < reorder_threshold: score = 70 (HIGH)
+- Elif days_of_supply < 30: score = 40 (MEDIUM)
+- Else: score = 15 (LOW)
+
+Shortage Probability:
+- Risk > 80: P(shortage) = 0.80
+- Risk 60-80: P(shortage) = 0.50
+- Risk 30-60: P(shortage) = 0.15
+- Risk < 30: P(shortage) = 0.02
+
+Forecast Accuracy (MAPE):
+MAPE = mean(|actual - predicted| / actual) × 100%
+Target: < 10% for production use
+
+
+Deployment:
+===========
+
+Environment: Streamlit Cloud
+Python Version: 3.10+
+Dependencies: streamlit, pandas, numpy, plotly, statsmodels
+
+Requirements File: requirements.txt
+- streamlit>=1.30.0
+- pandas>=2.2.0
+- numpy>=2.0.0
+- plotly>=5.18.0
+- statsmodels>=0.14.0
+- scikit-learn>=1.4.0
+
+Entry Point: streamlit run app/main.py
